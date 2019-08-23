@@ -212,7 +212,7 @@ if [ "$TYPE" == "manager" ]; then
     export WORKER_TOKEN=$TOKEN_WORKER
     export DIR_STORE=$STORE/services
 
-    git clone https://oauth2:$KEY@gitlab.com/omneedia/start /mnt/services
+    git clone https://oauth2:$KEY@gitlab.com/omneedia/start $DIR_STORE
         
-    docker stack deploy --compose-file $STORE/stacks/omneedia-web.yml omneedia-web
+    docker stack deploy --compose-file $DIR_STORE/stacks/omneedia-web.yml omneedia-web
 fi
