@@ -16,6 +16,9 @@
 
 
 SCRIPTPATH="$( cd "$(dirname "$0")" ; pwd -P )"
+TZ=Europe/Paris
+ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
+DEBIAN_FRONTEND=noninteractive
 
 while getopts p:t:d:a:v:s:k:m: option
 do
