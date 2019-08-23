@@ -70,6 +70,9 @@ bash -c "$(wget -O - https://deb.nodesource.com/setup_10.x)"
 apt update
 apt-get --assume-yes install glances nodejs apt-transport-https ca-certificates curl git gnupg-agent software-properties-common nfs-common
 
+systemctl enable rpc-statd
+systemctl start rpc-statd
+
 if ! [ -z "$PROXY" ]
 then
 	git config --global http.proxy $PROXY
@@ -195,13 +198,14 @@ if [ "$TYPE" == "manager" ]; then
         export DATASTORE=$ADDR
     fi
     
-    echo "{\"id\":\"$MANAGER_ID\",\"store\":\"$DATASTORE\",\"dir\":\"$STORE\",\"volume-token\":\"$VOLKEY\",\"token\":\"$TOKEN\",\"worker\":\"$TOKEN_WORKER\"}" > $DIR_STORE/.env
+    echo "{\"id\":\"$MANAGER_ID\",\"MANAGER_IP\":\"$ADDR\",\"store\":\"$DATASTORE\",\"dir\":\"$STORE\",\"volume-token\":\"$VOLKEY\",\"token\":\"$TOKEN\",\"worker\":\"$TOKEN_WORKER\"}" > $STORE/.env
     
     echo "MANAGER_ID=$MANAGER_ID" >> /etc/environment
     echo "VOLUME_TOKEN=$VOLKEY" >> /etc/environment
     echo "MANAGER_TOKEN=$TOKEN" >> /etc/environment
     echo "WORKER_TOKEN=$TOKEN_WORKER" >> /etc/environment
     echo "DIR_STORE=$STORE/services" >> /etc/environment
+    echo "MANAGER_IP=$ADDR" >> /etc/environment
 
     echo "StrictHostKeyChecking no" >> /etc/ssh/ssh_config
     echo "UserKnownHostsFile=/dev/null" >> /etc/ssh/ssh_config
@@ -211,6 +215,7 @@ if [ "$TYPE" == "manager" ]; then
     export MANAGER_TOKEN=$TOKEN
     export WORKER_TOKEN=$TOKEN_WORKER
     export DIR_STORE=$STORE/services
+    export MANAGER_IP=$ADDR
 
     git clone https://oauth2:$KEY@gitlab.com/omneedia/start $DIR_STORE
         
