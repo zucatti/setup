@@ -173,7 +173,6 @@ if [ "$TYPE" == "worker" ]; then
     bash -c "$(wget -O - http://$MY_MANAGER:33333/add/$ADDR)"
     exit 1;
 else
-    bash -c "$(wget -O - http://$VOLUME:33333/add/$ADDR)"
     UCF_FORCE_CONFOLD=1 DEBIAN_FRONTEND=noninteractive apt-get -o Dpkg::Options::="--force-confdef" -o Dpkg::Options::="--force-confold" -qq -y --assume-yes install ansible
 fi
 
