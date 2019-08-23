@@ -201,7 +201,7 @@ if [ "$TYPE" == "manager" ]; then
     echo "VOLUME_TOKEN=$VOLKEY" >> /etc/environment
     echo "MANAGER_TOKEN=$TOKEN" >> /etc/environment
     echo "WORKER_TOKEN=$TOKEN_WORKER" >> /etc/environment
-    echo "DIR_STORE=$STORE" >> /etc/environment
+    echo "DIR_STORE=$STORE/services" >> /etc/environment
 
     echo "StrictHostKeyChecking no" >> /etc/ssh/ssh_config
     echo "UserKnownHostsFile=/dev/null" >> /etc/ssh/ssh_config
@@ -210,7 +210,9 @@ if [ "$TYPE" == "manager" ]; then
     export VOLUME_TOKEN=$VOLKEY
     export MANAGER_TOKEN=$TOKEN
     export WORKER_TOKEN=$TOKEN_WORKER
+    export DIR_STORE=$STORE/services
+
     git clone https://oauth2:$KEY@gitlab.com/omneedia/start /mnt/services
         
-    docker stack deploy --compose-file /mnt/services/stacks/omneedia-web.yml omneedia-web
+    docker stack deploy --compose-file $STORE/stacks/omneedia-web.yml omneedia-web
 fi
