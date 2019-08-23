@@ -20,9 +20,6 @@ TZ=Europe/Paris
 ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 DEBIAN_FRONTEND=noninteractive
 
-echo $KEY
-read
-
 while getopts p:t:d:a:v:s:k:m: option
 do
 case "${option}"
