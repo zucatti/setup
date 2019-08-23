@@ -3,16 +3,6 @@
 #
 # Omneedia Server
 #
-# Usage:
-# setup a manager + volume server
-# setup -a 172.23.210.180 -p http://myproxy.i2 -t manager
-# setup -t manager
-#
-# setup a manager with an external volume server
-# setup -t manager -v xxx.xxx.xxx.xxx
-#
-# setup a volume server only
-# setup -t volume -d /data
 
 
 SCRIPTPATH="$( cd "$(dirname "$0")" ; pwd -P )"
@@ -134,6 +124,8 @@ if [ "$INSTALL_VOLUME" == 1 ]; then
     echo "Please note the volumeservice token: $VOLKEY"
     
     if [ "$TYPE" == "volume" ]; then
+        echo "DIR_STORE=$STORE" >> /etc/environment
+        export DIR_STORE=$STORE
         exit 1;
     fi
 fi
@@ -181,6 +173,7 @@ if [ "$TYPE" == "worker" ]; then
     bash -c "$(wget -O - http://$MY_MANAGER:33333/add/$ADDR)"
     exit 1;
 else
+    bash -c "$(wget -O - http://$VOLUME:33333/add/$ADDR)"
     UCF_FORCE_CONFOLD=1 DEBIAN_FRONTEND=noninteractive apt-get -o Dpkg::Options::="--force-confdef" -o Dpkg::Options::="--force-confold" -qq -y --assume-yes install ansible
 fi
 
