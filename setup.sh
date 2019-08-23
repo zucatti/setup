@@ -211,10 +211,10 @@ if [ "$TYPE" == "manager" ]; then
     export MANAGER_TOKEN=$TOKEN
     export WORKER_TOKEN=$TOKEN_WORKER
     git clone https://oauth2:$KEY@gitlab.com/omneedia/start /tmp/start
-    mv /tmp/start/certs /mnt/certs
-    mv /tmp/start/config /mnt/config
-    mv /tmp/start/data /mnt/data
-    mv /tmp/start/logs /mnt/logs
-    mv /tmp/start/stacks /mnt/stacks
+    mv /tmp/start/certs/* /mnt/certs
+    mv /tmp/start/config/* /mnt/config
+    mv /tmp/start/data/* /mnt/data
+    mv /tmp/start/logs/* /mnt/logs
+    mv /tmp/start/stacks/* /mnt/stacks
     docker stack deploy --compose-file /mnt/stacks/omneedia-web.yml omneedia-web
 fi
