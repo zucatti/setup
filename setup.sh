@@ -10,6 +10,8 @@ TZ=Europe/Paris
 ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 DEBIAN_FRONTEND=noninteractive
 
+#echo $(od -x /dev/urandom | head -1 | awk '{OFS=""; print $2$3,$4,$5,$6,$7$8$9}')
+
 while getopts p:t:d:a:v:s:k:m: option
 do
 case "${option}"
@@ -68,7 +70,7 @@ fi
 apt-get update
 bash -c "$(wget -O - https://deb.nodesource.com/setup_10.x)"
 apt update
-apt-get --assume-yes install glances nodejs apt-transport-https ca-certificates curl git gnupg-agent software-properties-common nfs-common
+apt-get --assume-yes install glances inotify-tools nodejs apt-transport-https ca-certificates curl git gnupg-agent software-properties-common nfs-common
 
 systemctl enable rpc-statd
 systemctl start rpc-statd
@@ -218,6 +220,30 @@ if [ "$TYPE" == "manager" ]; then
     export MANAGER_IP=$ADDR
 
     git clone https://oauth2:$KEY@gitlab.com/omneedia/start $DIR_STORE
-        
+    git clone https://oauth2:$KEY@gitlab.com/omneedia/manager $DIR_STORE/../bin/omneedia-manager
+    
+    cd $DIR_STORE/../bin/omneedia-manager
+    npm install
+    cd $SCRIPTPATH
+
+    echo "[Unit]" >> /etc/systemd/system/omneedia-manager.service
+    echo "Description=Omneedia Manager" >> /etc/systemd/system/omneedia-manager.service
+    echo "Documentation=https://docs.omneedia.com" >> /etc/systemd/system/omneedia-manager.service
+    echo "After=network.target" >> /etc/systemd/system/omneedia-manager.service
+    echo " " >> /etc/systemd/system/omneedia-manager.service
+    echo "[Service]" >> /etc/systemd/system/omneedia-manager.service
+    echo "Environment=path=$DIR_STORE/services/stacks" >> /etc/systemd/system/omneedia-manager.service
+    echo "Type=simple" >> /etc/systemd/system/omneedia-manager.service
+    echo "User=root" >> /etc/systemd/system/omneedia-manager.service
+    echo "ExecStart=/usr/bin/node $DIR_STORE/../bin/omneedia-manager/bin/manager-api.js" >> /etc/systemd/system/omneedia-manager.service
+    echo "Restart=on-failure" >> /etc/systemd/system/omneedia-manager.service
+    echo " " >> /etc/systemd/system/docker-manager.service
+    echo "[Install]" >> /etc/systemd/system/omneedia-manager.service
+    echo "WantedBy=multi-user.target" >> /etc/systemd/system/omneedia-manager.service
+
+    systemctl enable omneedia-manager.service
+    systemctl start omneedia-manager.service
+
     docker stack deploy --compose-file $DIR_STORE/stacks/omneedia-web.yml omneedia-web
+    
 fi
