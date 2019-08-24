@@ -232,7 +232,7 @@ if [ "$TYPE" == "manager" ]; then
     echo "After=network.target" >> /etc/systemd/system/omneedia-manager.service
     echo " " >> /etc/systemd/system/omneedia-manager.service
     echo "[Service]" >> /etc/systemd/system/omneedia-manager.service
-    echo "Environment=path=$DIR_STORE/services/stacks" >> /etc/systemd/system/omneedia-manager.service
+    echo "Environment=path=$DIR_STORE/stacks" >> /etc/systemd/system/omneedia-manager.service
     echo "Type=simple" >> /etc/systemd/system/omneedia-manager.service
     echo "User=root" >> /etc/systemd/system/omneedia-manager.service
     echo "ExecStart=/usr/bin/node $DIR_STORE/../bin/omneedia-manager/bin/manager-api.js" >> /etc/systemd/system/omneedia-manager.service
