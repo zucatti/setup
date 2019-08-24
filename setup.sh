@@ -235,7 +235,7 @@ if [ "$TYPE" == "manager" ]; then
     echo "Environment=path=$DIR_STORE/stacks" >> /etc/systemd/system/omneedia-manager.service
     echo "Type=simple" >> /etc/systemd/system/omneedia-manager.service
     echo "User=root" >> /etc/systemd/system/omneedia-manager.service
-    echo "ExecStart=/usr/bin/node $DIR_STORE/../bin/omneedia-manager/bin/manager-api.js" >> /etc/systemd/system/omneedia-manager.service
+    echo "ExecStart=/usr/bin/node $DIR_STORE/../bin/omneedia-manager/manager-api.js" >> /etc/systemd/system/omneedia-manager.service
     echo "Restart=on-failure" >> /etc/systemd/system/omneedia-manager.service
     echo " " >> /etc/systemd/system/docker-manager.service
     echo "[Install]" >> /etc/systemd/system/omneedia-manager.service
