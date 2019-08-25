@@ -242,7 +242,7 @@ if [ "$TYPE" == "manager" ]; then
     echo "WantedBy=multi-user.target" >> /etc/systemd/system/omneedia-manager.service
 
     systemctl enable omneedia-manager.service
-    systemctl start omneedia-manager.service
+    #systemctl start omneedia-manager.service
 
     docker stack deploy --compose-file $DIR_STORE/stacks/omneedia-web.yml omneedia-web
     
