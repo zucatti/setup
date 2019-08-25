@@ -243,5 +243,7 @@ if [ "$TYPE" == "manager" ]; then
 
     systemctl enable omneedia-manager.service
     systemctl start omneedia-manager.service
+
+    docker stack deploy --compose-file $DIR_STORE/stacks/omneedia-web.yml omneedia-web
     
 fi
