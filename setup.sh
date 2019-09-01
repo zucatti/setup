@@ -185,6 +185,7 @@ if [ "$TYPE" == "manager" ]; then
 	cat /dev/zero | ssh-keygen -q -N "" > /dev/null
     docker swarm init --advertise-addr $ADDR:2377
     docker network create public -d overlay
+    docker network create omneedia -d overlay
     TOKEN="`docker swarm join-token manager -q`"
     TOKEN_WORKER="`docker swarm join-token worker -q`"
     MANAGER_ID="`docker node ls -f "role=manager" | awk 'FNR == 2 {print $1}'`"
