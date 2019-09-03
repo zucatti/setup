@@ -247,4 +247,11 @@ if [ "$TYPE" == "manager" ]; then
 
     docker stack deploy --compose-file $DIR_STORE/stacks/omneedia-web.yml omneedia-web
     
+    git clone https://oauth2:$KEY@gitlab.com/omneedia/manager-setup $DIR_STORE/../bin/setup
+    cd $DIR_STORE/../bin/setup
+    npm install
+    clear
+    node setup
+    cd $SCRIPTPATH
+
 fi
